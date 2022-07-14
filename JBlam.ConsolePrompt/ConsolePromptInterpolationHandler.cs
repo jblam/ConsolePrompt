@@ -23,7 +23,11 @@ public ref struct ConsolePromptInterpolationHandler
 
     public void AppendFormatted<T>(T t)
     {
-        b.Append(t);
+        AppendFormattedImpl(t);
+    }
+    public void AppendFormatted<T>(T t, int alignment)
+    {
+        AppendFormattedImpl(t, alignment);
     }
 
     public void AppendFormatted<T>(T t, string? format)
@@ -39,17 +43,45 @@ public ref struct ConsolePromptInterpolationHandler
             AppendFormattedImpl(t, format);
         }
     }
-    Range AppendFormattedImpl<T>(T t, string? format)
+    public void AppendFormatted<T>(T t, int alignment, string? format)
     {
-        var previousLength = b.Length;
-        if (t is IFormattable f)
+        // TODO: parse off any colour specifier on the front of format
+        if (TryParseColourFormat(format, out var colour, out var rest))
         {
-            b.Append(f.ToString(format, null));
+            var range = AppendFormattedImpl(t, alignment, rest.ToString());
+            colours.Add((range, colour));
         }
         else
         {
-            b.Append(t);
+            AppendFormattedImpl(t, alignment, format);
         }
+    }
+    Range AppendFormattedImpl<T>(T t, string? format)
+    {
+        var previousLength = b.Length;
+        StringBuilder.AppendInterpolatedStringHandler h = new(0, 1, b);
+        h.AppendFormatted(t, format);
+        return previousLength..b.Length;
+    }
+    Range AppendFormattedImpl<T>(T t)
+    {
+        var previousLength = b.Length;
+        StringBuilder.AppendInterpolatedStringHandler h = new(0, 1, b);
+        h.AppendFormatted(t);
+        return previousLength..b.Length;
+    }
+    Range AppendFormattedImpl<T>(T t, int alignment)
+    {
+        var previousLength = b.Length;
+        StringBuilder.AppendInterpolatedStringHandler h = new(0, 1, b);
+        h.AppendFormatted(t, alignment);
+        return previousLength..b.Length;
+    }
+    Range AppendFormattedImpl<T>(T t, int alignment, string? format)
+    {
+        var previousLength = b.Length;
+        StringBuilder.AppendInterpolatedStringHandler h = new(0, 1, b);
+        h.AppendFormatted(t, alignment, format);
         return previousLength..b.Length;
     }
     bool TryParseColourFormat(string? format, out ConsoleColor colour, out ReadOnlySpan<char> rest)
@@ -82,7 +114,6 @@ public ref struct ConsolePromptInterpolationHandler
         rest = format.AsSpan();
         return false;
     }
-    // TODO: implement overloads with alignment.
 
     public IReadOnlyList<(Range, ConsoleColor)> Colours => colours;
     public string GetFormatted() => b.ToString();

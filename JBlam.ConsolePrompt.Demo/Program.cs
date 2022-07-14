@@ -9,4 +9,8 @@ Out.WriteLine($"Format only: [{i:X2}]");
 Out.WriteLine($"Format and colour: [{i:Magenta,X2}]");
 Out.WriteLine($"With group separator: [{i:##,#}]");
 Out.WriteLine($"With group separator and colour: [{i:Blue,##,#}]");
+Out.WriteLine($"Spacing only: [{i,8}]");
+Out.WriteLine($"Spacing and format: [{i,8:X2}]");
+Out.WriteLine($"Colour and spacing: [{i,8:Cyan}]");
+Out.WriteLine($"Colour and spacing and format: [{i,8:Green,X2}]");
 Console.WriteLine();
