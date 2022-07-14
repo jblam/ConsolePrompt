@@ -1,6 +1,11 @@
 ﻿namespace JBlam.ConsolePrompt;
 public static class Out
 {
+    public static void WriteLine(ConsolePromptInterpolationHandler handler) 
+    {
+        Out.Write(handler);
+        Console.WriteLine();
+    }
     public static void Write(ConsolePromptInterpolationHandler handler)
     {
         // JB 2022-07-02 perf considerations:
