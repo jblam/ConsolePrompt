@@ -6,6 +6,7 @@ namespace JBlam.ConsolePrompt;
 [InterpolatedStringHandler]
 public ref struct ConsolePromptInterpolationHandler
 {
+    readonly StringBuilder.AppendInterpolatedStringHandler h;
     readonly StringBuilder b;
     readonly List<(Range, ConsoleColor)> colours;
 
@@ -14,11 +15,12 @@ public ref struct ConsolePromptInterpolationHandler
         // JB 2022-07-02: literalLength is the _minimum_ length; if formattedCount > 0
         // we should probably request more?
         b = new(literalLength);
+        h = new(literalLength, formattedCount, b);
         colours = new(formattedCount);
     }
     public void AppendLiteral(string s)
     {
-        b.Append(s);
+        h.AppendLiteral(s);
     }
 
     public void AppendFormatted<T>(T t)
@@ -59,28 +61,24 @@ public ref struct ConsolePromptInterpolationHandler
     Range AppendFormattedImpl<T>(T t, string? format)
     {
         var previousLength = b.Length;
-        StringBuilder.AppendInterpolatedStringHandler h = new(0, 1, b);
         h.AppendFormatted(t, format);
         return previousLength..b.Length;
     }
     Range AppendFormattedImpl<T>(T t)
     {
         var previousLength = b.Length;
-        StringBuilder.AppendInterpolatedStringHandler h = new(0, 1, b);
         h.AppendFormatted(t);
         return previousLength..b.Length;
     }
     Range AppendFormattedImpl<T>(T t, int alignment)
     {
         var previousLength = b.Length;
-        StringBuilder.AppendInterpolatedStringHandler h = new(0, 1, b);
         h.AppendFormatted(t, alignment);
         return previousLength..b.Length;
     }
     Range AppendFormattedImpl<T>(T t, int alignment, string? format)
     {
         var previousLength = b.Length;
-        StringBuilder.AppendInterpolatedStringHandler h = new(0, 1, b);
         h.AppendFormatted(t, alignment, format);
         return previousLength..b.Length;
     }
