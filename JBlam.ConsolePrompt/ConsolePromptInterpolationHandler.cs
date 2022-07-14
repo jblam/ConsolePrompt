@@ -34,8 +34,7 @@ public ref struct ConsolePromptInterpolationHandler
 
     public void AppendFormatted<T>(T t, string? format)
     {
-        // TODO: parse off any colour specifier on the front of format
-        if (TryParseColourFormat(format, out var colour, out var rest))
+        if (ColourFormat.TryParse(format, out var colour, out var rest))
         {
             var range = AppendFormattedImpl(t, rest.ToString());
             colours.Add((range, colour));
@@ -47,8 +46,7 @@ public ref struct ConsolePromptInterpolationHandler
     }
     public void AppendFormatted<T>(T t, int alignment, string? format)
     {
-        // TODO: parse off any colour specifier on the front of format
-        if (TryParseColourFormat(format, out var colour, out var rest))
+        if (ColourFormat.TryParse(format, out var colour, out var rest))
         {
             var range = AppendFormattedImpl(t, alignment, rest.ToString());
             colours.Add((range, colour));
@@ -81,36 +79,6 @@ public ref struct ConsolePromptInterpolationHandler
         var previousLength = b.Length;
         h.AppendFormatted(t, alignment, format);
         return previousLength..b.Length;
-    }
-    bool TryParseColourFormat(string? format, out ConsoleColor colour, out ReadOnlySpan<char> rest)
-    {
-        if (format is null)
-        {
-            colour = default;
-            rest = default;
-            return false;
-        }
-        var span = format.AsSpan();
-        if (span.IndexOf(',') is var partition
-            && partition >= 0
-            // JB 2022-07-14: we can be confident that if a format substring is a legal colour,
-            // and the user is passing it to our colourful handler, it's intended to be a colour.
-            // However, if we don't parse a colour, we can't emit an error because commas are legal
-            // in other kinds of format string too.
-            // We might consider having a more-unusual separator char?
-            && Enum.TryParse<ConsoleColor>(span[..partition], out colour))
-        {
-            rest = span[(partition + 1)..];
-            return true;
-        }
-        else if (Enum.TryParse<ConsoleColor>(format, out colour))
-        {
-            rest = default;
-            return true;
-        }
-        colour = default;
-        rest = format.AsSpan();
-        return false;
     }
 
     public IReadOnlyList<(Range, ConsoleColor)> Colours => colours;
