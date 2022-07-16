@@ -6,6 +6,19 @@ namespace JBlam.ConsolePrompt;
 [InterpolatedStringHandler]
 public ref struct ConsolePromptInterpolationHandler
 {
+    // Implementation notes:
+    // - every time we format a thing, we strip off any colour info and then
+    //   delegate the "underlying" format to a base implementation.
+    // - the formatted text is stored in a buffer
+    // - we store the interpreted colour against the range of chars written
+    //   to the internal buffer
+    // - consumers of this type will be able to get the buffer and the coloured
+    //   ranges
+    // We need the internal buffer mainly so that we can measure how many chars
+    // get emitted when the underlying formatter prints stuff. This is why we
+    // need to use the StringBuilder handler impl: the DefaultInterpolatedStringHandler
+    // implementation doesn't provide that information.
+
     readonly StringBuilder.AppendInterpolatedStringHandler h;
     readonly StringBuilder b;
     readonly List<(Range, ConsoleColor)> colours;

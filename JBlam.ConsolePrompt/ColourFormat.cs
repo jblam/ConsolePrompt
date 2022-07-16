@@ -18,12 +18,14 @@ internal static class ColourFormat
             // However, if we don't parse a colour, we can't emit an error because commas are legal
             // in other kinds of format string too.
             // We might consider having a more-unusual separator char?
-            && Enum.TryParse<ConsoleColor>(span[..partition], out colour))
+            && Enum.TryParse<ConsoleColor>(span[..partition], out colour)
+            && Enum.IsDefined(colour))
         {
             rest = span[(partition + 1)..];
             return true;
         }
-        else if (Enum.TryParse<ConsoleColor>(format, out colour))
+        else if (Enum.TryParse<ConsoleColor>(format, out colour)
+            && Enum.IsDefined(colour))
         {
             rest = default;
             return true;
