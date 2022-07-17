@@ -1,0 +1,24 @@
+This is not free and open-source software.
+
+In general, you may use this software for commercial and non-commercial purposes, with caveats.
+
+These caveats are:
+
+1. You must not repackage or re-release this software for profit, nor seek to evade the terms of this license by repackaging or re-release.
+    - You may include this software in part of a larger for-profit software product, provided the other conditions of this license are met.
+    - You may not repackage this software under a different license.
+    - If you include this software within a larger open-source project, the terms of this license still apply to this project.
+2. You may not include, reference, or link to this software in any context which seeks to do harm to others.
+    - For the purposes of this license, "harm" includes (but is not limited to) performing, or providing material, emotional, or logistical support to someone who performs:
+        - homophobia
+        - transphobia
+        - discrimination on the basis of sex, gender, race, or religion
+        - acts subverting the rights of refugees as determined by the UNHCR
+        - acts subverting democracy
+        - wage theft, or any other act which subverts the rights of workers
+3. Any legal action arising from this software or license must be initiated in the jurisdiction of Victoria, Australia
+4. While using this software, you must not behave in a way which makes the author feel uncomfortable.
+
+Where any term of the above is not legally binding in your jurisdiction, the use of this software for any purpose is disallowed.
+
+All terms of this license are binding, even those which are expressed here in lowercase.
