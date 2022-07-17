@@ -7,15 +7,25 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Include="../LICENSE.txt" Pack="true" PackagePath="">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <PackageId>JBlam.ConsolePrompt</PackageId>
-    <PackageVersion>0.1.0-testing</PackageVersion>
+    <PackageVersion>0.1.1-testing</PackageVersion>
     <PackageTags>Console;ConsoleColor;stdout;colour</PackageTags>
     <PackageDescription>
       This library provides a wrapper around the System.Console methods
       to enable specifying console colour output using the C# format string
       syntax, like WriteLine($"The value is {value:Green}.");
     </PackageDescription>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <Authors>JBlam</Authors>
+    <Copyright>Copyright (C) 2022 JBlam (https://github.com/jblam)</Copyright>
   </PropertyGroup>
 </Project>
